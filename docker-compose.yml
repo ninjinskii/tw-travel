@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  web:
+    build: .
+    container_name: tw-travel.njk.localhost
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tw-travel.rule=Host(`tw-travel.njk.localhost`)"
+      - "traefik.http.routers.tw-travel.tls=true"
+      - "traefik.docker.network=proxy"
+    networks:
+      - default
+      - proxy
+    volumes:
+      - ./:/app
+    ports:
+      - 5000:5000
+
+networks:
+  proxy:
+    external: true
