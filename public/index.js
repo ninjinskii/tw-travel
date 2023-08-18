@@ -4,6 +4,9 @@ const INPUT_WALK_TIME = "walk-time"
 const INPUT_DAYS_OFFSET = "days-offset"
 const TIME_LENGTH = 8 // "00:00:00".length
 
+let counterIntervalId = -1
+let target = -1
+
 function checkDate(inputId) {
   const input = document.getElementById(inputId)
   const time = input.value.split(":")
@@ -26,6 +29,7 @@ function computeTime(unparsedArrival, unparsedWalkTime, daysOffset, support) {
   const offset = arrival.getDate() + parseInt(daysOffset)
   arrival.setDate(offset)
 
+  target = arrival.getTime() - totalWalkTime
   return new Date(arrival.getTime() - totalWalkTime).toLocaleString()
 }
 
@@ -92,8 +96,17 @@ function onInputChanged(inputId) {
     const returnTime = parseStringDate(arrival).toLocaleString()
     returnDiv.innerHTML = returnTime + ":000"
 
-    document.title = "Départ à: " + result.split(' ')[1] + " (pour snipe l'attaque arrivant à " + returnTime + ":xxx)"
+    clearInterval(counterIntervalId)
+    counterIntervalId = setInterval(setupCounter, 1000)
   }
+}
+
+function setupCounter() {
+  const now = Date.now()
+  const remainingTime = now - target
+  const remainingSeconds = Math.floor(remainingTime / 1000)
+  const reached = remainingSeconds * -1 <= 0
+  document.title = `${new Date(target).toLocaleString()} | ${reached ? "GO !!" : remainingSeconds * -1}`
 }
 
 document.addEventListener('keydown', (event) => {
@@ -104,7 +117,9 @@ document.addEventListener('keydown', (event) => {
 
 // deno-lint-ignore no-window-prefix
 window.addEventListener('load', () => {
-  const checkbox = document.getElementById("scavenger");
+  document.getElementById(INPUT_ARRIVAL).focus()
+
+  const checkbox = document.getElementById("scavenger")
   checkbox.addEventListener('change', function() {
     const div = document.getElementById("scavenger-text")
     const text = this.checked 
