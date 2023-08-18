@@ -21,7 +21,7 @@ body {
 }
 
 .result {
-  color: rgb(179, 62, 233);
+  color: rgba(189, 103, 230);
   font-size: 32px;
   font-weight: 900;
   border: solid 1px #fefefe;
@@ -29,6 +29,10 @@ body {
   padding: 12px;
   border-radius: 12px;
   letter-spacing: 5px;
+}
+
+.left {
+  text-align: start;
 }
 
 .text--small {
@@ -48,6 +52,13 @@ body {
   text-align: initial;
 }
 
+.checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 li {
   margin-top: 16px;
 }
@@ -65,4 +76,11 @@ input {
   text-align: center;
   padding: 12px;
   margin: 12px 0 36px 0
+}
+
+input[type=checkbox] {
+  transform: scale(1.5);
+  accent-color: rgba(189, 103, 230);
+  margin: 0 24px 0 0;
+  padding: 0;
 }

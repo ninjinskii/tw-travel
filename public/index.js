@@ -1,4 +1,5 @@
 const INPUT_ARRIVAL = "arrival"
+const INPUT_SCAVENGER = "scavenger"
 const INPUT_WALK_TIME = "walk-time"
 const INPUT_DAYS_OFFSET = "days-offset"
 const TIME_LENGTH = 8 // "00:00:00".length
@@ -16,11 +17,11 @@ function checkDate(inputId) {
   return time.length === 3 && isAllNumber && isHourValid && isMinuteValid && isSecondValid
 }
 
-function computeTime(unparsedArrival, unparsedWalkTime, daysOffset) { 
+function computeTime(unparsedArrival, unparsedWalkTime, daysOffset, support) { 
   const arrival = parseStringDate(unparsedArrival)
   const [hour, minute, second] = unparsedWalkTime.split(":")
   const walkTime = hour * 3600000 + minute * 60000 + second * 1000
-  const totalWalkTime = walkTime * 2
+  const totalWalkTime = support ? walkTime : walkTime * 2
 
   const offset = arrival.getDate() + parseInt(daysOffset)
   arrival.setDate(offset)
@@ -78,10 +79,11 @@ function onInputChanged(inputId) {
   }
 
   if (isInputFilled(INPUT_ARRIVAL) && isInputFilled(INPUT_WALK_TIME)) {
+    const support = !document.getElementById(INPUT_SCAVENGER).checked
     const arrival = document.getElementById(INPUT_ARRIVAL).value
     const walkTime = document.getElementById(INPUT_WALK_TIME).value
     const daysOffset = document.getElementById(INPUT_DAYS_OFFSET).value
-    const result = computeTime(arrival, walkTime, daysOffset)
+    const result = computeTime(arrival, walkTime, daysOffset, support)
 
     const div = document.getElementById("result")
     div.innerHTML = result
@@ -99,3 +101,21 @@ document.addEventListener('keydown', (event) => {
     event.target.value = ""
   }
 });
+
+// deno-lint-ignore no-window-prefix
+window.addEventListener('load', () => {
+  const checkbox = document.getElementById("scavenger");
+  checkbox.addEventListener('change', function() {
+    const div = document.getElementById("scavenger-text")
+    const text = this.checked 
+      ? "Insérez le temps de trajet de vos troupes vers le village à attaquer"
+      : "Insérez le temps de trajet pour le support"
+  
+    div.innerHTML = text
+
+    const returnDiv = document.getElementById("return-block")
+    returnDiv.style.visibility = this.checked ? "visible" : "hidden"
+
+    onInputChanged(undefined)
+  });
+})
