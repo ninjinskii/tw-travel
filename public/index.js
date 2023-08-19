@@ -30,7 +30,7 @@ function computeTime(unparsedArrival, unparsedWalkTime, daysOffset, support) {
   arrival.setDate(offset)
 
   target = arrival.getTime() - totalWalkTime
-  return new Date(arrival.getTime() - totalWalkTime).toLocaleString()
+  return new Date(arrival.getTime() - totalWalkTime).toLocaleString("fr")
 }
 
 function parseStringDate(unparsed) {
@@ -57,7 +57,9 @@ function maybeAutocompleteColon(inputId) {
   const clearValue =  input.value.replace(/:/g, '')
 
   if (clearValue.length % 2 === 0) {
-    if(input.value.split("").pop() === ":" || clearValue.length === 0) {
+    const lastChar = input.value.split("").pop()
+
+    if (lastChar === ":" || clearValue.length === 0) {
       input.value = input.value.slice(0, -1)
     } else {
       input.value += ":"
@@ -93,7 +95,7 @@ function onInputChanged(inputId) {
     div.innerHTML = result
 
     const returnDiv = document.getElementById("return")
-    const returnTime = parseStringDate(arrival).toLocaleString()
+    const returnTime = parseStringDate(arrival).toLocaleString("fr")
     returnDiv.innerHTML = returnTime + ":000"
 
     clearInterval(counterIntervalId)
@@ -106,7 +108,7 @@ function setupCounter() {
   const remainingTime = now - target
   const remainingSeconds = Math.floor(remainingTime / 1000)
   const reached = remainingSeconds * -1 <= 0
-  document.title = `${new Date(target).toLocaleString()} | ${reached ? "GO !!" : remainingSeconds * -1}`
+  document.title = `${new Date(target).toLocaleString("fr")} | ${reached ? "GO !!" : remainingSeconds * -1}`
 }
 
 document.addEventListener('keydown', (event) => {
