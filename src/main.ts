@@ -7,6 +7,7 @@ Deno.serve({ port: 5000 }, async (request) => {
   const lastSegment = request.url.split("/").pop();
 
   switch (lastSegment) {
+    case  "":
     case ASSET_HTML: {
       const htmlContent = await Deno.readTextFile(`${ASSETS_DIRECTORY}${ASSET_HTML}`);
 
