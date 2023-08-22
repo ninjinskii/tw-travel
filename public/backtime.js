@@ -1,11 +1,12 @@
 const INPUT_ARRIVAL = "arrival"
-const INPUT_SCAVENGER = "scavenger"
+const INPUT_NEMESIS_WALK_TIME = "nemesis-walk-time"
 const INPUT_WALK_TIME = "walk-time"
 const INPUT_DAYS_OFFSET = "days-offset"
 const TIME_LENGTH = 8 // "00:00:00".length
 
 let counterIntervalId = -1
 let target = -1
+let nemesisReturnTime = -1
 
 function checkDate(inputId) {
   const input = document.getElementById(inputId)
@@ -20,17 +21,21 @@ function checkDate(inputId) {
   return time.length === 3 && isAllNumber && isHourValid && isMinuteValid && isSecondValid
 }
 
-function computeTime(unparsedArrival, unparsedWalkTime, daysOffset, isSupport) { 
+function computeTime(unparsedArrival, unparsedWalkTime, unparsedNemesisWalkTime, daysOffset) { 
   const arrival = parseStringDate(unparsedArrival)
   const [hour, minute, second] = unparsedWalkTime.split(":")
-  const walkTime = hour * 3600000 + minute * 60000 + second * 1000
-  const totalWalkTime = isSupport ? walkTime : walkTime * 2
+  const [hourNemesis, minuteNemesis, secondNemesis] = unparsedNemesisWalkTime.split(":")
+  const walkTime = timeToMillis(hour, minute, second)
+  const nemesisWalkTime = timeToMillis(hourNemesis, minuteNemesis, secondNemesis) 
+
+  // heure d'arrivée + temps nemesis - temps allié
 
   const offset = arrival.getDate() + parseInt(daysOffset)
   arrival.setDate(offset)
 
-  target = arrival.getTime() - totalWalkTime
-  return new Date(arrival.getTime() - totalWalkTime).toLocaleString("fr")
+  target = arrival.getTime() + nemesisWalkTime - walkTime
+  nemesisReturnTime = arrival.getTime() + nemesisWalkTime
+  return new Date(arrival.getTime() + nemesisWalkTime - walkTime).toLocaleString("fr")
 }
 
 function parseStringDate(unparsed) {
@@ -46,6 +51,10 @@ function parseStringDate(unparsed) {
 function isInputFilled(inputId) {
   const input = document.getElementById(inputId)
   return input.value.length === TIME_LENGTH
+}
+
+function timeToMillis(hour, minute, second) {
+  return hour * 3600000 + minute * 60000 + second * 1000
 }
 
 function maybeAutocompleteColon(inputId) {
@@ -68,8 +77,9 @@ function maybeAutocompleteColon(inputId) {
 
 }
 
+// deno-lint-ignore no-unused-vars
 function onInputChanged(inputId) {
-  if (inputId != undefined) {
+  if (inputId !== undefined) {
     maybeAutocompleteColon(inputId)
   
     if (!isInputFilled(inputId)) {
@@ -84,18 +94,18 @@ function onInputChanged(inputId) {
     }
   }
 
-  if (isInputFilled(INPUT_ARRIVAL) && isInputFilled(INPUT_WALK_TIME)) {
-    const support = !document.getElementById(INPUT_SCAVENGER).checked
+  if (isInputFilled(INPUT_ARRIVAL) && isInputFilled(INPUT_WALK_TIME) && isInputFilled(INPUT_NEMESIS_WALK_TIME)) {
     const arrival = document.getElementById(INPUT_ARRIVAL).value
     const walkTime = document.getElementById(INPUT_WALK_TIME).value
+    const nemesisWalkTime = document.getElementById(INPUT_NEMESIS_WALK_TIME).value
     const daysOffset = document.getElementById(INPUT_DAYS_OFFSET).value
-    const result = computeTime(arrival, walkTime, daysOffset, support)
+    const result = computeTime(arrival, walkTime, nemesisWalkTime, daysOffset)
 
     const div = document.getElementById("result")
     div.innerHTML = result
 
     const returnDiv = document.getElementById("return")
-    const returnTime = parseStringDate(arrival).toLocaleString("fr")
+    const returnTime = new Date(nemesisReturnTime).toLocaleString("fr")
     returnDiv.innerHTML = returnTime + ":000"
 
     clearInterval(counterIntervalId)
@@ -120,19 +130,4 @@ document.addEventListener('keydown', (event) => {
 // deno-lint-ignore no-window-prefix
 window.addEventListener('load', () => {
   document.getElementById(INPUT_ARRIVAL).focus()
-
-  const checkbox = document.getElementById("scavenger")
-  checkbox.addEventListener('change', function() {
-    const div = document.getElementById("scavenger-text")
-    const text = this.checked 
-      ? "Insérez le temps de trajet de vos troupes vers le village à attaquer"
-      : "Insérez le temps de trajet pour le support"
-  
-    div.innerHTML = text
-
-    const returnDiv = document.getElementById("return-block")
-    returnDiv.style.visibility = this.checked ? "visible" : "hidden"
-
-    onInputChanged(undefined)
-  });
 })
