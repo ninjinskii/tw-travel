@@ -84,3 +84,55 @@ input[type=checkbox] {
   margin: 0 24px 0 0;
   padding: 0;
 }
+
+@media only screen and (max-width: 600px) {
+  body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    background-color: #121212;
+    color: #fefefe;
+  }
+  
+  .container {
+    max-width: 100%;
+    margin: 60px auto 60px auto;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  input {
+    background-color: #363636;
+    border: solid 1px rgb(179, 62, 233);
+    border-radius: 8px;
+    height: 32px;
+    outline: none;
+    color: #fefefe;
+    font-style: bold;
+    font-size: 24px;
+    letter-spacing: 16px;
+    text-align: center;
+    padding: 8px;
+    margin: 8px 0 24px 0
+  }
+
+  #return {
+    font-size: 24px;
+  }
+
+  .info {
+    margin-top: 60px;
+  }
+
+  .result {
+    color: rgb(179, 62, 233);
+    font-size: 24px;
+    font-weight: 900;
+    border: solid 1px #fefefe;
+    margin: 8px auto 16px auto;
+    padding: 8px;
+    border-radius: 8px;
+    letter-spacing: 2px;
+  }
+}
