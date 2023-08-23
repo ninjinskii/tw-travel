@@ -11,38 +11,38 @@
 
   <body>
     <main>
-    <a href="/backtime.html">Basculer sur l'outil de backtime</a>
-    <div class="container">
-      <div class="left">Insérez l'heure d'arrivée de l'attaque qu'il faut <u>sniper</u></div>
-      <div id="arrival-error" class="error"></div>
-      <input id="arrival" maxlength="8" autocomplete="off" oninput="onInputChanged('arrival')"></input>
-      <div class="left">Dans combien de jours ? (0 = aujourd'hui)</div>
-      <input id="days-offset" maxlength="1" autocomplete="off" value="0" oninput="onInputChanged(undefined)"></input>
-      <div class="checkbox text--small">
-        <input id="scavenger" name="scavenger" type="checkbox" />
-        <label for="scavenger">Attaquer un village barbare</label>
+      <ul>
+        <li><a href="/backtime.html">Backtime</a></li>
+        <li class="active"><a href="/">Snipe</a></li>
+        <li><a href="/cancelsnipe.html">Cancel&nbsp;Snipe</a></li>
+      </ul>
+
+      <div class="container">
+        <div class="left">Insérez l'heure d'arrivée de l'attaque qu'il faut <u>sniper</u></div>
+        <div id="arrival-error" class="error"></div>
+        <input id="arrival" maxlength="8" autocomplete="off" oninput="onInputChanged('arrival')"></input>
+
+        <div class="left">Dans combien de jours ? <span class="text--small">(0 = aujourd'hui)</span></div>
+        <input id="days-offset" maxlength="1" autocomplete="off" value="0" oninput="onInputChanged(undefined)"></input>
+
+        <div class="checkbox text--small">
+          <input id="scavenger" name="scavenger" type="checkbox" />
+          <label for="scavenger">Attaquer un village barbare</label>
+        </div>
+
+        <!-- Insérez le temps de trajet de vos troupes vers le village à attaquer -->
+        <div id="scavenger-text" class="left">Insérez le temps de trajet pour le support</div>
+        <div id="walk-time-error" class="error"></div>
+        <input id="walk-time" maxlength="8" autocomplete="off" oninput="onInputChanged('walk-time')"></input>
+
+        <div class="text--big">Heure de départ:</div>
+        <div id="result" class="result"></div>
+
+        <div id="return-block" class="container" style="visibility: hidden;">
+          <div class="text--small">Vos troupes rentreront dans votre village à:</div>
+          <div id="return" class="text--small"></div>
+        </div>
       </div>
-      <!-- Insérez le temps de trajet de vos troupes vers le village à attaquer -->
-      <div id="scavenger-text" class="left">Insérez le temps de trajet pour le support</div>
-      <div id="walk-time-error" class="error"></div>
-      <input id="walk-time" maxlength="8" autocomplete="off" oninput="onInputChanged('walk-time')"></input>
-      <div class="text--big">Heure de départ:</div>
-      <div id="result" class="result"></div>
-      <div id="return-block" class="container" style="visibility: hidden;">
-        <div class="text--small">Vos troupes rentreront dans votre village à:</div>
-        <div id="return" class="text--small"></div>
-      </div>
-      <div class="info">
-        Bon à savoir:
-        <ul>
-          <li>Quand une attaque revient d'un village, les millisecondes retombent toujours à 0. Les trains qui ne sont pas calés dans la même seconde sont donc très facile à snipe</li>
-          <li>Si le train est dans la même seconde, alors il faut effectuer un cancel snipe</li>
-          <li>Utilisez alors cet outil avec un nombre de temps arbitraire au lieu du temps de trajet, auquel il faudra annuler l'attaque</li>
-          <li>Pour un cancel snipe, vous aurez les même millisecondes au retour qu'à l'aller, il faut donc envoyer les troupes au bon moment. Les millisecondes de l'annulation ne comptent pas, il suffit alors d'être dans la bonne seconde</li>
-          <li>En cas d'échec de synchronisation des millisecondes lors du lancer de l'attaque, annuler celle-ci et recommencer l'opération avec un temps plus petit</li>
-        </ul>
-      </div>
-    </div>
-  </main>
+    </main>
   </body>
 </html>

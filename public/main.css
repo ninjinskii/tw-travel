@@ -6,10 +6,11 @@ body {
   letter-spacing: 1px;
   background-color: #121212;
   color: #fefefe;
+  margin: 0;
 }
 
 .container {
-  max-width: 600px;
+  max-width: 800px;
   margin: 30px auto 30px auto;
   display: flex;
   flex-direction: column;
@@ -43,13 +44,24 @@ body {
   font-size: 40px;
 }
 
-#return {
-  font-size: 32px;
+.red {
+  color: rgb(235, 62, 62) !important;
 }
 
-.info {
-  margin-top: 100px;
-  text-align: initial;
+.blue {
+  color: rgb(62, 157, 235) !important;
+}
+
+.border-red {
+  border-color: rgb(235, 62, 62);
+}
+
+.border-blue {
+  border-color: rgb(62, 157, 235);
+}
+
+#return {
+  font-size: 32px;
 }
 
 .checkbox {
@@ -57,10 +69,6 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-}
-
-li {
-  margin-top: 16px;
 }
 
 input {
@@ -85,6 +93,40 @@ input[type=checkbox] {
   padding: 0;
 }
 
+a {
+  color: inherit;
+  text-decoration: inherit;
+  padding: 12px;
+}
+
+ul {
+  list-style-type: none;
+  display: flex;
+  margin: 12px 0 0 12px;
+  padding: 0;
+}
+
+li {
+  border: solid 1px rgba(189, 189, 189, 0.56);
+  margin: 0;
+  padding: 12px;
+}
+
+li:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+li:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.active {
+  cursor: inherit;
+  border: solid 1px rgba(189, 103, 230);
+}
+
 @media only screen and (max-width: 600px) {
   body {
     font-family: 'Roboto', sans-serif;
@@ -100,6 +142,7 @@ input[type=checkbox] {
     display: flex;
     flex-direction: column;
     text-align: center;
+    padding: 0 8px 0 8px;
   }
 
   input {
@@ -115,6 +158,11 @@ input[type=checkbox] {
     text-align: center;
     padding: 8px;
     margin: 8px 0 24px 0
+  }
+
+  ul {
+    justify-content: center;
+    margin: 12px 0 0 0;
   }
 
   #return {

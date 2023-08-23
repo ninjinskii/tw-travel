@@ -1,12 +1,11 @@
 const INPUT_ARRIVAL = "arrival"
-const INPUT_NEMESIS_WALK_TIME = "nemesis-walk-time"
 const INPUT_WALK_TIME = "walk-time"
 const INPUT_DAYS_OFFSET = "days-offset"
 const TIME_LENGTH = 8 // "00:00:00".length
 
 let counterIntervalId = -1
 let target = -1
-let nemesisReturnTime = -1
+let cancelTarget = -1
 
 function checkDate(inputId) {
   const input = document.getElementById(inputId)
@@ -21,19 +20,22 @@ function checkDate(inputId) {
   return time.length === 3 && isAllNumber && isHourValid && isMinuteValid && isSecondValid
 }
 
-function computeTime(unparsedArrival, unparsedWalkTime, unparsedNemesisWalkTime, daysOffset) { 
+function computeTime(unparsedArrival, unparsedWalkTime, daysOffset) { 
   const arrival = parseStringDate(unparsedArrival)
   const [hour, minute, second] = unparsedWalkTime.split(":")
-  const [hourNemesis, minuteNemesis, secondNemesis] = unparsedNemesisWalkTime.split(":")
   const walkTime = timeToMillis(hour, minute, second)
-  const nemesisWalkTime = timeToMillis(hourNemesis, minuteNemesis, secondNemesis) 
+  const totalWalkTime = timeToMillis(hour, minute, second) * 2
 
   const offset = arrival.getDate() + parseInt(daysOffset)
   arrival.setDate(offset)
 
-  target = arrival.getTime() + nemesisWalkTime - walkTime
-  nemesisReturnTime = arrival.getTime() + nemesisWalkTime
-  return new Date(arrival.getTime() + nemesisWalkTime - walkTime).toLocaleString("fr")
+  target = arrival.getTime() - totalWalkTime
+  cancelTarget = arrival.getTime() - walkTime
+
+  return {
+    launchTime: new Date(target).toLocaleString("fr"),
+    cancelTime: new Date(cancelTarget).toLocaleString("fr"),
+  }
 }
 
 function parseStringDate(unparsed) {
@@ -92,19 +94,28 @@ function onInputChanged(inputId) {
     }
   }
 
-  if (isInputFilled(INPUT_ARRIVAL) && isInputFilled(INPUT_WALK_TIME) && isInputFilled(INPUT_NEMESIS_WALK_TIME)) {
+  if (isInputFilled(INPUT_ARRIVAL) && isInputFilled(INPUT_WALK_TIME)) {
     const arrival = document.getElementById(INPUT_ARRIVAL).value
     const walkTime = document.getElementById(INPUT_WALK_TIME).value
-    const nemesisWalkTime = document.getElementById(INPUT_NEMESIS_WALK_TIME).value
     const daysOffset = document.getElementById(INPUT_DAYS_OFFSET).value
-    const result = computeTime(arrival, walkTime, nemesisWalkTime, daysOffset)
+    const { launchTime, cancelTime } = computeTime(arrival, walkTime, daysOffset)
+    const tooLate = Date.now() > target
 
+    const tooLateDiv = document.getElementById("time-error")
     const div = document.getElementById("result")
-    div.innerHTML = result
+    const div2 = document.getElementById("result-cancel")
 
-    const returnDiv = document.getElementById("return")
-    const returnTime = new Date(nemesisReturnTime).toLocaleString("fr")
-    returnDiv.innerHTML = returnTime + ":000"
+    if (tooLate) {
+      tooLateDiv.innerHTML = "Trop tard ! Réessayez avec un délai arbitraire plus petit !"
+      div.innerHTML = ""
+      div2.innerHTML = ""
+      clearInterval(counterIntervalId)
+      return
+    }
+
+    tooLateDiv.innerHTML = ""
+    div.innerHTML = launchTime
+    div2.innerHTML = cancelTime
 
     clearInterval(counterIntervalId)
     counterIntervalId = setInterval(setupCounter, 1000)
@@ -113,10 +124,33 @@ function onInputChanged(inputId) {
 
 function setupCounter() {
   const now = Date.now()
-  const remainingTime = now - target
-  const remainingSeconds = Math.floor(remainingTime / 1000)
-  const reached = remainingSeconds * -1 <= 0
-  document.title = `${new Date(target).toLocaleString("fr")} | ${reached ? "GO !!" : remainingSeconds * -1}`
+  const launchRemainingTime = now - target
+  const launchRemainingSeconds = Math.floor(launchRemainingTime / 1000)
+  const cancelRemainingTime = now - cancelTarget
+  const cancelRemainingSeconds = Math.floor(cancelRemainingTime / 1000)
+
+  const launchReached = launchRemainingSeconds * -1 <= 0
+  const cancelReached = cancelRemainingSeconds * -1 <= 0
+
+  console.log("launchRemainingSeconds")
+  console.log(launchRemainingSeconds)
+  console.log("cancelRemainingSeconds")
+  console.log(cancelRemainingSeconds)
+  
+  if (!launchReached) {
+    const formattedLaunchTime = new Date(target).toLocaleTimeString("fr")
+    document.title = `${formattedLaunchTime} | Envoi: ${launchRemainingSeconds * -1}`
+    return
+  }
+  
+  const formattedCancelTime = new Date(cancelTarget).toLocaleTimeString("fr")
+
+  if (!cancelReached) {
+    document.title = `${formattedCancelTime} | Cancel: ${cancelRemainingSeconds * -1}`
+    return
+  }
+
+  document.title = `${formattedCancelTime} | CANCEL !!`
 }
 
 document.addEventListener('keydown', (event) => {

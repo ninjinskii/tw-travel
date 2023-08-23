@@ -11,30 +11,36 @@
 
   <body>
     <main>
-    <a href="/">Basculer sur l'outil de snipe</a>
-    <div class="container">
-      <div class="left">Insérez l'heure d'arrivée <u>dans votre village</u> de l'attaque qu'il faut <u>backtime</u></div>
-      <div id="arrival-error" class="error"></div>
-      <input id="arrival" maxlength="8" autocomplete="off" oninput="onInputChanged('arrival')"></input>
+      <ul>
+        <li class="active"><a href="/backtime.html">Backtime</a></li>
+        <li><a href="/">Snipe</a></li>
+        <li><a href="/cancelsnipe.html">Cancel&nbsp;Snipe</a></li>
+      </ul>
 
-      <div class="left">Dans combien de jours ? (0 = aujourd'hui)</div>
-      <input id="days-offset" maxlength="1" autocomplete="off" value="0" oninput="onInputChanged(undefined)"></input>
+      <div class="container">
+        <div class="left">Insérez l'heure d'arrivée <u>dans votre village</u> de l'attaque qu'il faut <u>backtime</u></div>
+        <div id="arrival-error" class="error"></div>
+        <input id="arrival" maxlength="8" autocomplete="off" oninput="onInputChanged('arrival')"></input>
 
-      <div class="left">Insérez le <u>temps de trajet</u> de l'attaque qu'il faut <u>backtime</u></div>
-      <div id="nemesis-walk-time-error" class="error"></div>
-      <input id="nemesis-walk-time" maxlength="8" autocomplete="off" oninput="onInputChanged('nemesis-walk-time')"></input>
-    
-      <div class="left">Insérez le temps de trajet de vos troupes</div>
-      <div id="walk-time-error" class="error"></div>
-      <input id="walk-time" maxlength="8" autocomplete="off" oninput="onInputChanged('walk-time')"></input>
+        <div class="left">Dans combien de jours ? <span class="text--small">(0 = aujourd'hui)</span></div>
+        <input id="days-offset" maxlength="1" autocomplete="off" value="0" oninput="onInputChanged(undefined)"></input>
 
-      <div class="text--big">Heure de départ:</div>
-      <div id="result" class="result"></div>
-      <div id="return-block" class="container">
-        <div class="text--small">Ses troupes rentreront dans son village à:</div>
-        <div id="return" class="text--small"></div>
+        <div class="left">Insérez le <u>temps de trajet</u> de l'attaque qu'il faut <u>backtime</u></div>
+        <div id="nemesis-walk-time-error" class="error"></div>
+        <input id="nemesis-walk-time" maxlength="8" autocomplete="off" oninput="onInputChanged('nemesis-walk-time')"></input>
+      
+        <div class="left">Insérez le temps de trajet de vos troupes</div>
+        <div id="walk-time-error" class="error"></div>
+        <input id="walk-time" maxlength="8" autocomplete="off" oninput="onInputChanged('walk-time')"></input>
+
+        <div class="text--big">Heure de départ:</div>
+        <div id="result" class="result"></div>
+
+        <div id="return-block" class="container">
+          <div class="text--small">Ses troupes rentreront dans son village à:</div>
+          <div id="return" class="text--small"></div>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
   </body>
 </html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <title>TW Travel</title>
+    <script type="text/javascript" src="./cancelsnipe.js"></script>
+    <link rel="stylesheet" href="./main.css">
+  </head>
+
+  <body>
+    <main>
+      <ul>
+        <li><a href="/backtime.html">Backtime</a></li>
+        <li><a href="/">Snipe</a></li>
+        <li class="active"><a href="/cancelsnipe.html">Cancel&nbsp;Snipe</a></li>
+      </ul>
+
+      <div class="container">
+        <div class="left">Insérez l'heure d'arrivée de l'<span class="red">attaque</span> qu'il faut <u>cancel snipe</u></div>
+        <div id="arrival-error" class="error"></div>
+        <input id="arrival" class="border-red" maxlength="8" autocomplete="off" oninput="onInputChanged('arrival')"></input>
+
+        <div class="left">Dans combien de jours ? <span class="text--small">(0 = aujourd'hui)</span></div>
+        <input id="days-offset" maxlength="1" autocomplete="off" value="0" oninput="onInputChanged(undefined)"></input>
+
+        <div class="left">Insérez un délai arbitraire au bout de laquelle annuler votre <span class="blue">attaque</span></div>
+        <div id="walk-time-error" class="error"></div>
+        <input id="walk-time" class="border-blue" maxlength="8" autocomplete="off" oninput="onInputChanged('walk-time')"></input>
+        
+        <div id="time-error" class="error"></div>
+        <div class="text--big">Heure de départ de l'<span class="blue">attaque</span>:</div>
+        <div id="result" class="result"></div>
+
+        <div class="text--big">Heure d'annulation de l'<span class="blue">attaque</span>:</div>
+        <div id="result-cancel" class="result"></div>
+
+        <div id="return-block" class="container">
+          <div class="text--small">
+            Assurez vous que les millisecondes de l'heure d'arrivée de l'<span class="blue">attaque</span> 
+            se situent juste avant les millisecondes de l'<span class="red">attaque</span> ennemie à sniper, 
+            à défaut annulez l'<span class="blue">attaque</span> immédiatement et réessayez avec un délai plus court
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
