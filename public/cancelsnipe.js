@@ -122,6 +122,26 @@ function onInputChanged(inputId) {
   }
 }
 
+// deno-lint-ignore no-unused-vars
+function onRetryClicked(negative) {
+  if (!isInputFilled(INPUT_ARRIVAL) || !isInputFilled(INPUT_WALK_TIME)) {
+    return;
+  }
+
+  const walkTimeInput = document.getElementById(INPUT_WALK_TIME)
+  const parsedWalkTime = parseStringDate(walkTimeInput.value)
+  const delay = 20
+  const modifier = negative ? -1 : 1
+  parsedWalkTime.setSeconds((parsedWalkTime.getSeconds() + delay * modifier))
+
+  const hours = ("0" + parsedWalkTime.getHours()).slice(-2)
+  const minutes = ("0" + parsedWalkTime.getMinutes()).slice(-2)
+  const seconds = ("0" + parsedWalkTime.getSeconds()).slice(-2)
+
+  walkTimeInput.value = `${hours}:${minutes}:${seconds}`
+  onInputChanged()
+}
+
 function setupCounter() {
   const now = Date.now()
   const launchRemainingTime = now - target
@@ -131,11 +151,6 @@ function setupCounter() {
 
   const launchReached = launchRemainingSeconds * -1 <= 0
   const cancelReached = cancelRemainingSeconds * -1 <= 0
-
-  console.log("launchRemainingSeconds")
-  console.log(launchRemainingSeconds)
-  console.log("cancelRemainingSeconds")
-  console.log(cancelRemainingSeconds)
   
   if (!launchReached) {
     const formattedLaunchTime = new Date(target).toLocaleTimeString("fr")

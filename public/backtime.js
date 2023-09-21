@@ -116,7 +116,7 @@ function setupCounter() {
   const remainingTime = now - target
   const remainingSeconds = Math.floor(remainingTime / 1000)
   const reached = remainingSeconds * -1 <= 0
-  document.title = `${new Date(target).toLocaleString("fr")} | ${reached ? "GO !!" : remainingSeconds * -1}`
+  document.title = `${new Date(target).toLocaleTimeString("fr")} | ${reached ? "GO !!" : remainingSeconds * -1}`
 }
 
 document.addEventListener('keydown', (event) => {

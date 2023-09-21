@@ -40,6 +40,10 @@ body {
   color: rgba(189, 189, 189, 0.56);
 }
 
+.text--medium {
+  font-size: 30px;
+}
+
 .text--big {
   font-size: 40px;
 }
@@ -71,6 +75,16 @@ body {
   justify-content: flex-start;
 }
 
+.row {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.green:hover {
+  background-color: rgba(139, 233, 62, 0.575);
+}
+
 input {
   background-color: #363636;
   border: solid 1px rgb(179, 62, 233);
@@ -91,6 +105,22 @@ input[type=checkbox] {
   accent-color: rgba(189, 103, 230);
   margin: 0 24px 0 0;
   padding: 0;
+}
+
+button {
+  outline: none;
+  padding: 24px;
+  width: 49%;
+  border: solid 1px rgb(179, 62, 233);
+  background-color: rgba(179, 62, 233, 0.55);
+  transition: all 0.3s ease-out;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #fefefe
+}
+
+button:hover {
+  background-color: rgba(233, 62, 91, 0.55);
 }
 
 a {
@@ -157,7 +187,7 @@ li:last-child {
     letter-spacing: 16px;
     text-align: center;
     padding: 8px;
-    margin: 8px 0 24px 0
+    margin: 8px 0 24px 0;
   }
 
   ul {
